@@ -1,28 +1,29 @@
-// Parallax background setup
 window.addEventListener("load", () => {
   const heroBg = document.querySelector(".hero-bg");
-  if (!heroBg) {
-    console.warn("No .hero-bg found for parallax");
-    return;
-  }
+  if (!heroBg) return;
 
   const maxShift = 40; // max px left/right
 
   function handleMouse(e) {
     // -1 (far left) → 0 (center) → 1 (far right)
-    const ratio = (-e.clientX / window.innerWidth - 0.5) * 2;
+    const ratio = (e.clientX / window.innerWidth - 0.5) * 2;
     const x = ratio * maxShift;
     heroBg.style.setProperty("--hero-mouse-x", `${x}px`);
   }
 
   function handleScroll() {
-    const scrollY = window.scrollY;
-    heroBg.style.setProperty("--hero-scroll-y", `${scrollY}px`);
+    heroBg.style.setProperty("--hero-scroll-y", `${window.scrollY}px`);
   }
 
-  window.addEventListener("mousemove", handleMouse);
-  window.addEventListener("scroll", handleScroll);
+  const supportsMouse = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches;
 
-  // Set initial value so it’s correct even if you load mid-page
+  if (supportsMouse) {
+    window.addEventListener("mousemove", handleMouse);
+  } else {
+    // Disable left/right effect
+    heroBg.style.setProperty("--hero-mouse-x", "0px");
+  }
+
+  window.addEventListener("scroll", handleScroll);
   handleScroll();
 });

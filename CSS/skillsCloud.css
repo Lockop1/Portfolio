@@ -1,0 +1,200 @@
+/* ===== Skills Section Layout ===== */
+.skills-section {
+  width: 100%;
+}
+
+.skills-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(2rem, 4vw, 4rem);
+  padding: clamp(2.2rem, 4vw, 3.5rem);
+  border-radius: 2rem;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(249, 168, 98, 0.12), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.12), transparent 55%),
+    linear-gradient(145deg, rgba(11, 16, 32, 0.95), rgba(5, 8, 20, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.skills-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skills-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.skills-title {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1.2;
+}
+
+.skills-text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+}
+
+.skills-lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.skills-list h3 {
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.95rem;
+}
+
+.skills-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.skills-visual {
+  position: relative;
+  width: min(420px, 100%);
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+}
+
+.skills-orb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(249, 168, 98, 0.25), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(56, 189, 248, 0.2), transparent 50%),
+    var(--bg-elev);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition:
+    transform 0.45s var(--ease),
+    opacity 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.7),
+    inset 0 0 100px rgba(5, 8, 20, 0.75);
+}
+
+.skills-visual.is-boosted .skills-orb {
+  box-shadow:
+    0 35px 90px rgba(0, 0, 0, 0.75),
+    0 0 40px rgba(56, 189, 248, 0.25),
+    inset 0 0 120px rgba(5, 8, 20, 0.95);
+  transform: scale(1.04);
+}
+
+.skills-visual.is-boosted .skills-center {
+  text-shadow:
+    0 0 18px rgba(249, 168, 98, 0.45),
+    0 0 32px rgba(56, 189, 248, 0.4);
+}
+
+.skills-orb::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.skills-center {
+  position: relative;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(149, 183, 184, 0.9);
+  text-shadow:
+    0 0 10px rgba(249, 168, 98, 0.35),
+    0 0 20px rgba(56, 189, 248, 0.3);
+  pointer-events: none;
+}
+
+.skills-cloud {
+  position: absolute;
+  inset: 8%;
+  display: block;
+}
+
+.tagcloud {
+  width: 100% !important;
+  height: 100% !important;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: rgba(244, 237, 228, 0.9);
+}
+
+.tagcloud--item {
+  transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.tagcloud--item:hover {
+  transform: scale(1.18);
+  color: rgba(56, 189, 248, 0.9);
+  text-shadow:
+    0 0 8px rgba(56, 189, 248, 0.5),
+    0 0 14px rgba(249, 168, 98, 0.3);
+}
+
+/* Removed overlay view in favor of spin boost */
+
+@media (max-width: 1024px) {
+  .skills-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-visual {
+    width: min(360px, 100%);
+  }
+}
+
+@media (max-width: 460px) {
+  .skills-lists {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .skills-layout {
+    padding: 1.8rem;
+    border-radius: 1.8rem;
+  }
+
+  .skills-lists {
+    gap: 0.9rem;
+  }
+}

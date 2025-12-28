@@ -1,0 +1,474 @@
+/* ===========================
+   WHO AM I SECTION
+   =========================== */
+
+.who-am-i {
+  width: min(1180px, 100%);
+  margin: clamp(1.8rem, 4vw, 3.2rem) auto;
+  padding: clamp(2rem, 4vw, 2.8rem) clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--tone-earth), 0.92),
+    rgba(var(--tone-olive-soft), 0.92)
+  );
+  border: 1px solid rgba(var(--tone-cream), 0.25);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.85);
+  display: grid;
+  grid-template-columns: 2fr 1.1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.who-am-i-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.who-am-i h1 {
+  font-size: clamp(2.1rem, 3vw, 2.6rem);
+  margin-bottom: 0.25rem;
+}
+
+.who-am-i-tagline {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.who-am-i-section {
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--glass-border);
+}
+
+.who-am-i-section:first-of-type {
+  border-top: none;
+}
+
+.who-am-i-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.who-am-i-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.who-am-i-toggle-label::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--accent-2);
+  opacity: 0.9;
+}
+
+.who-am-i-toggle-icon {
+  font-size: 1.6rem;
+  opacity: 0.7;
+  transition: transform 160ms var(--ease), opacity 160ms var(--ease);
+}
+
+.who-am-i-section.is-open .who-am-i-toggle-icon {
+  transform: rotate(90deg);
+  opacity: 1;
+}
+
+.who-am-i-body {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  opacity: 0.9;
+}
+
+.who-am-i-photo {
+  display: flex;
+  justify-content: center;
+}
+
+.pic-of-me {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 1.5rem;
+  border: 4px solid var(--tone-cream-soft);
+  object-fit: cover;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+.who-am-i-body-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 400ms var(--ease),
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.who-am-i-section.is-open .who-am-i-body-wrapper {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    max-height 2s var(--ease),
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+
+/* ===========================
+   WHAT I DO SECTION
+   =========================== */
+
+.what-i-do-section {
+  min-height: auto;
+  padding: clamp(6rem, 7vw, 5.5rem) 1.5rem clamp(12rem, 9vw, 9.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--fg);
+}
+
+.what-i-do-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top,
+      rgba(5, 8, 20, 0.04),
+      rgba(5, 8, 20, 0.55)),
+    url("../images/backgrounds/trainimg1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.95;
+  transition: opacity 0.35s ease;
+  z-index: -1;
+}
+
+.what-i-do-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 8, 20, 0.95) 0%,
+    rgba(5, 8, 20, 0) 20%,
+    rgba(5, 8, 20, 0) 80%,
+    rgba(5, 8, 20, 0.95) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.what-i-do-section.is-merged::before {
+  opacity: 0.5;
+}
+
+.wid-header {
+  text-align: center;
+  max-width: 720px;
+  margin-inline: auto;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.wid-title {
+  display: inline-block;
+  padding: 0.6rem 1.8rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  border-radius: 999px;
+  font-size: clamp(2.1rem, 3vw, 2.6rem);
+  letter-spacing: 0.04em;
+  background: rgba(var(--tone-earth), 0.85);
+  border: 1px solid rgba(var(--tone-cream), 0.5);
+  color: rgb(var(--tone-cream-soft));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+  transform: translateY(0);
+  transition:
+    transform 280ms var(--ease),
+    box-shadow 280ms ease,
+    border-color 200ms ease,
+    opacity 400ms ease;
+}
+
+.wid-title:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 55px rgba(0, 0, 0, 1);
+  border-color: var(--tone-gold);
+}
+
+.wid-subtitle {
+  margin-top: 0.9rem;
+  font-size: 0.98rem;
+  opacity: 0.9;
+  color: var(--tone-cream-soft);
+}
+
+/* dim header when merged/info open */
+.what-i-do-section.is-merged .wid-title {
+  opacity: 0.5;
+  transform: translateY(4px);
+}
+
+.bubbles-wrapper {
+  position: relative;
+  width: min(720px, 100%);
+  height: clamp(340px, 48vw, 440px);
+  margin-inline: auto;
+  padding-top: clamp(12rem, 18vw, 18rem);
+  padding-bottom: clamp(9.5rem, 14vw, 14rem);
+}
+
+.bubble-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.bubble {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(190px, 26vw, 240px);
+  height: clamp(190px, 26vw, 240px);
+  border-radius: 999px;
+  background: var(--bg-elev);
+  border: 2px solid var(--accent-2);
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--fg);
+  text-align: center;
+  padding: 1.25rem;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 500;
+  transform-origin: center;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.4s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.35s ease-in-out;
+}
+
+.bubble::before {
+  content: none;
+}
+
+.bubble-label {
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.bubble-game {
+  transform: translate(-50%, -50%) translate(0, -180px);
+}
+
+.bubble-web {
+  transform: translate(-50%, -50%) translate(-240px, 120px);
+}
+
+.bubble-sales {
+  transform: translate(-50%, -50%) translate(240px, 120px);
+}
+
+.what-i-do-section:not(.is-merged) .bubble:hover {
+  box-shadow:
+    0 0 30px var(--accent-2),
+    0 0 80px rgba(56, 189, 248, 0.3);
+}
+
+.what-i-do-section.is-merged .bubble {
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 1;
+}
+
+.what-i-do-section.is-merged .bubble-label {
+  opacity: 0;
+}
+
+.what-i-do-section.is-merged .bubble.is-active {
+  border-color: var(--accent-2);
+}
+
+.bubble-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -10%);
+  width: 100%;
+  padding: 2rem 2.1rem;
+  border-radius: 1.6rem;
+  background: rgba(5, 8, 20, 0.95);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 0 30px var(--accent-2),
+    0 0 80px rgba(56, 189, 248, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  text-align: left;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.bubble-info.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+}
+
+.what-i-do-section.is-merged .bubble-info.visible {
+  transition-delay: 0.35s;
+}
+
+.what-i-do-section.is-merged .bubble-info {
+  transition-delay: 0.1s;
+}
+
+.what-i-do-section:not(.is-merged) .bubble-info {
+  transition-delay: 0.1s;
+}
+
+.bubble-info-back {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.75rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 1.8rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.bubble-info-back:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.bubble-info-tag {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  opacity: 0.7;
+  color: var(--fg);
+  margin-bottom: 0.35rem;
+}
+
+.bubble-info-title {
+  font-size: 1.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.bubble-info-body {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+
+/* ===========================
+   MOBILE TWEAKS
+   =========================== */
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .what-i-do-section {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .bubbles-wrapper {
+    height: 240px;
+    padding-top: 8rem;
+    padding-bottom: 7rem;
+  }
+
+  .bubble {
+    width: 150px;
+    height: 150px;
+    font-size: 1rem;
+  }
+
+  .bubble-game {
+    transform: translate(-50%, -50%) translate(0, -110px);
+  }
+
+  .bubble-web {
+    transform: translate(-50%, -50%) translate(-140px, 70px);
+  }
+
+  .bubble-sales {
+    transform: translate(-50%, -50%) translate(140px, 70px);
+  }
+}
+
+@media (max-width: 600px) {
+  .bubbles-wrapper {
+    height: 340px;
+  }
+
+  .bubble {
+    width: 150px;
+    height: 150px;
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .bubble-game {
+    transform: translate(-50%, -50%) translate(0, -80px);
+  }
+
+  .bubble-web {
+    transform: translate(-50%, -50%) translate(-120px, 75px);
+  }
+
+  .bubble-sales {
+    transform: translate(-50%, -50%) translate(120px, 75px);
+  }
+
+  .bubble-info {
+    max-width: 92%;
+    padding: 0.7rem 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .who-am-i {
+    grid-template-columns: 1fr;
+    padding: 2rem 1.5rem;
+  }
+
+  .who-am-i-photo {
+    order: -1;
+    margin-bottom: 1.5rem;
+  }
+
+  .pic-of-me {
+    max-width: 260px;
+  }
+}

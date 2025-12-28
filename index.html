@@ -1,0 +1,1226 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anthony Newsome Portfolio</title>
+
+    <!--CSS-->
+    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/buttons.css">
+    <link rel="stylesheet" href="./CSS/titletext.css">
+    <link rel="stylesheet" href="./CSS/parallaxBackground.css">
+    <link rel="stylesheet" href="./CSS/whoAmI.css">
+    <link rel="stylesheet" href="./CSS/skillsCloud.css">
+    <link rel="stylesheet" href="./CSS/resume.css">
+    <link rel="stylesheet" href="./CSS/carouselStyle.css">
+    <link rel="stylesheet" href="./CSS/contact.css">
+    
+    <!--JS-->
+    <script src="./function.js"></script>
+    <script src="./parallax.js"></script>
+
+    <!--TagCloud for 3D sphere -->
+    <script src="https://cdn.jsdelivr.net/npm/TagCloud@2.5.0/dist/TagCloud.min.js"></script>
+
+    <!-- React (CDN) for a single-file start; dev builds are fine for now -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <!-- Babel lets us write JSX in this single file -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      const scrollSections = [
+        { id: "home-sec1", label: "Hero" },
+        { id: "home-sec2", label: "About" },
+        { id: "about-sec2", label: "What I Do" },
+        { id: "home-sec3", label: "Skills" },
+        { id: "home-sec4", label: "Projects" },
+        { id: "home-sec5", label: "Contact" },
+      ];
+
+      function Navbar({ page, setPage }) {
+        const Link = ({to, children}) => (
+          <button className="btn link-btn" data-active={page == to} onClick={() => setPage(to)}>{children}</button>
+        );
+        return (
+          <nav className="nav glass sticky">
+            <button id="theme-toggle" aria-label="Toggle theme"></button>
+            <div className="container">
+              <div className="links">
+                <Link to="home">Home</Link>
+                <Link to="talk">Talk To Anthony</Link>
+                <Link to="about">About</Link>
+                <Link to="blog">Blog</Link>
+                <Link to="projects">Projects</Link>
+                <Link to="games">Games</Link>
+              </div>
+            </div>
+          </nav>
+        );
+      }
+
+      function Home({setPage}) {
+        const heroWords = ["ANTHONY", "NEWSOME"];
+        const waveStagger = 70;
+        const letterWaveDuration = 950;
+        const longestWordLength = heroWords.reduce(
+          (max, word) => Math.max(max, word.length),
+          0
+        );
+        const waveLifetime = letterWaveDuration + waveStagger * (longestWordLength - 1);
+        const marqueeWords = [
+          "Game Development",
+          "Interaction Design",
+          "Unity & C#",
+          "React Interfaces",
+          "Systems Thinking",
+          "Creative Direction"
+        ];
+        const marqueeLoop = [...marqueeWords, ...marqueeWords];
+        const [waves, setWaves] = React.useState([]);
+        const waveTimeoutsRef = React.useRef([]);
+        const waveIdRef = React.useRef(0);
+
+        const triggerLetterWave = (rowIndex, charIndex) => {
+          const waveId = waveIdRef.current++;
+          const newWave = { id: waveId, row: rowIndex, origin: charIndex };
+          setWaves((prev) => [...prev, newWave]);
+        
+          const cleanup = () => {
+            setWaves((prev) => prev.filter((wave) => wave.id !== waveId));
+          };
+        
+          requestAnimationFrame(() => {
+            const timeoutId = setTimeout(cleanup, waveLifetime);
+            waveTimeoutsRef.current.push(timeoutId);
+          });
+        };
+
+        const handleLetterKey = (event, rowIndex, charIndex) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            triggerLetterWave(rowIndex, charIndex);
+          }
+        };
+
+        React.useEffect(() => {
+          return () => {
+            waveTimeoutsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
+            waveTimeoutsRef.current = [];
+          };
+        }, []);
+        return (
+          <>
+          <div id="home-sec1">
+            <section className="hero" aria-labelledby="hero-title">
+              <div className="hero-bg"></div>
+              <div className="hero-content">
+                <h1>WORK IN PROGRESS!</h1>
+                <p className="hero-kicker">Game developer & creative technologist</p>
+                <h1 className="sr-only" id="hero-title">Anthony Newsome</h1>
+                <div className="hero-title-grid">
+                  {heroWords.map((word, rowIndex) => {
+                    const rowWaves = waves.filter((wave) => wave.row === rowIndex);
+                    const limitedRowWaves = rowWaves.slice(-2);
+                    return (
+                    <div
+                      className="hero-title-row"
+                      key={word}
+                      style={{ "--hero-columns": word.length }}
+                    >
+                      {[...word].map((char, index) => {
+                        const overlayPackets = limitedRowWaves.map((wave) => {
+                          const delay = Math.abs(index - wave.origin) * waveStagger;
+                          return {
+                            delay,
+                            node: (
+                              <span
+                                className="hero-letter-overlay"
+                                key={`${wave.id}-${index}`}
+                                aria-hidden="true"
+                                style={{ animationDelay: `${delay}ms` }}
+                              >
+                                {char}
+                                <span className="hero-letter-ripple" />
+                              </span>
+                            )
+                          };
+                        });
+                        const overlays = overlayPackets.map((packet) => packet.node);
+                        const minDelay = overlayPackets.length
+                          ? Math.min(...overlayPackets.map((packet) => packet.delay))
+                          : 0;
+                        return (
+                          <span
+                            className={"hero-letter" + (overlays.length ? " has-wave" : "")}
+                            key={`${word}-${index}`}
+                            style={
+                              overlays.length
+                                ? { "--hero-wave-delay": `${minDelay}ms` }
+                                : null
+                            }
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => triggerLetterWave(rowIndex, index)}
+                            onKeyDown={(event) => handleLetterKey(event, rowIndex, index)}
+                          >
+                            <span className="hero-letter-char">{char}</span>
+                            {overlays}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  );
+                  })}
+                </div>
+                <div className="hero-cta">
+                  <button 
+                    className="button-glow hero-primary"
+                    onClick={() => window.scrollToSection("home-sec3")}>
+                    View Resume
+                  </button>
+                  <button
+                    className="hero-secondary"
+                    onClick={() => window.scrollToSection("home-sec5")}>
+                    Contact me
+                  </button>
+                </div>
+              </div>
+              <button 
+                className="hero-scroll-hint"
+                onClick={() => window.scrollToSection("home-sec2")}
+                aria-label="Scroll to learn more">
+                <span>Keep exploring</span>
+                <div className="hero-scroll-line">
+                  <span />
+                </div>
+                <div className="hero-scroll-arrow" aria-hidden="true">▼</div>
+              </button>
+            </section>
+          </div>
+
+
+
+          <div className="container">
+            <div id="home-sec2">
+              <div id="about-sec1">
+                <WhoAmI />
+              </div>
+            </div>
+          </div>
+
+            <div id="about-sec2">
+                <WhatIDoSection/>
+            </div>
+
+          <div className="container">
+
+            <div id="home-sec3">
+              <SkillsCloud/>
+            </div>
+
+            <div id="resume-sec">
+                  <button id="resume-btn" onClick={() => setPage("resume")}>
+                    <img id="resume-icon" alt="image description" src="./images/resume-icon.png"/>
+                    <p>View Full Resume</p>  
+                  </button>
+                </div>
+
+
+            <div id="home-sec4">
+              <h1 id="projects-title">Projects</h1>
+              <WorkCarousel />
+            </div>
+
+            <div id="home-sec5">
+                <ContactSection />
+            </div>
+          </div>
+          </>
+        );
+      }
+
+      function Talk() {
+        return (
+          <div className="container">
+            <h1>Talk</h1>
+            <div className="talk-container">
+            </div>
+          </div>
+        );
+      }
+
+      function About() {
+        return (
+          <div className="container">
+            <h1>About</h1>
+            <div className="about-container">
+            </div>
+          </div>
+        );
+      }
+
+      function Blog() {
+        return (
+          <div className="container">
+            <h1>Blog</h1>
+          </div>
+        );
+      }
+
+      function Projects() {
+        return (
+          <div className="container">
+            <h1>Projects</h1>
+            
+          </div>
+        );
+      }
+
+
+      function Games() {
+        return (
+          <div className="container">
+            <h1>Games</h1>
+            
+          </div>
+        );
+      }
+
+      function WhoAmI() {
+        const [openSection, setOpenSection] = React.useState("");
+
+        const toggleSection = (key) => {
+          setOpenSection((prev) => (prev === key ? null : key));
+        };
+      
+        return (
+          <section className="who-am-i" id="about">
+            <div className="who-am-i-text">
+              <h1>Hi, I'm Anthony</h1>
+              <p className="who-am-i-tagline">
+                Coding, creating, and chasing what inspires me.
+              </p>
+            
+              {/* How I got here */}
+              <div
+                className={
+                  "who-am-i-section" + (openSection === "how" ? " is-open" : "")
+                }
+              >
+                <button
+                  type="button"
+                  className="who-am-i-toggle"
+                  onClick={() => toggleSection("how")}
+                >
+                  <span className="who-am-i-toggle-label">How I got here</span>
+                  <span className="who-am-i-toggle-icon">
+                    {openSection === "how" ? "›" : "›"}
+                  </span>
+                </button>
+                <div className="who-am-i-body-wrapper">
+                  
+                    <p className="who-am-i-body">
+                      I'm Anthony Newsome, a software developer who has always loved
+                      building things. I started when I was ten, using an app called
+                      Tynker to make small games, including one that reached over a
+                      hundred thousand views and led to a feature on their blog. That
+                      encouragement pushed me into Minecraft modding with ID Tech, where
+                      I learned Java, then into Processing, and eventually Unity. I
+                      spent years experimenting with mechanics, systems, and ideas just
+                      because I was curious. I've worked on bigger projects, joined game
+                      jams, and later expanded into web development through freeCodeCamp,
+                      which led me to build this website.
+                    </p>
+                  
+                </div>
+              </div>
+            
+              {/* What I do */}
+              <div
+                className={
+                  "who-am-i-section" + (openSection === "what" ? " is-open" : "")
+                }
+              >
+                <button
+                  type="button"
+                  className="who-am-i-toggle"
+                  onClick={() => toggleSection("what")}
+                >
+                  <span className="who-am-i-toggle-label">What I do</span>
+                  <span className="who-am-i-toggle-icon">
+                    {openSection === "what" ? "›" : "›"}
+                  </span>
+                </button>
+                <div className="who-am-i-body-wrapper">
+                  
+                    <p className="who-am-i-body">
+                      I mainly work with C sharp and Java, and most of my experience
+                      comes from game development. I enjoy creating experiences that
+                      feel alive, whether that is a Unity prototype or an interactive
+                      React interface. I like building systems from the ground up and
+                      shaping them into something clean, functional, and visually
+                      engaging. I am always learning and consistently set goals to
+                      expand my skills and explore new technologies.
+                    </p>
+                  
+                </div>
+              </div>
+            
+              {/* What makes me unique */}
+              <div
+                className={
+                  "who-am-i-section" + (openSection === "unique" ? " is-open" : "")
+                }
+              >
+                <button
+                  type="button"
+                  className="who-am-i-toggle"
+                  onClick={() => toggleSection("unique")}
+                >
+                  <span className="who-am-i-toggle-label">What makes me unique</span>
+                  <span className="who-am-i-toggle-icon">
+                    {openSection === "unique" ? "›" : "›"}
+                  </span>
+                </button>
+                <div className="who-am-i-body-wrapper">
+                  
+                    <p className="who-am-i-body">
+                      Outside of coding, I love challenge and exploration. Snowboarding,
+                      traveling, and discovering new places fuel the same curiosity I
+                      bring into my projects. I am always looking for ways to grow, try
+                      new things, and improve. I value creativity, community, and
+                      finding ways to impact others lives positively.
+                    </p>
+                 
+                </div>
+              </div>
+            </div>
+          
+            <div className="who-am-i-photo">
+              <img
+                className="pic-of-me"
+                src="images/muffins-anthony.JPG"
+                alt="Anthony enjoying the outdoors"
+              />
+            </div>
+          </section>
+        );
+      }
+
+      function WhatIDoSection() {
+        const [active, setActive] = React.useState(null);
+        const [lastActive, setLastActive] = React.useState(null);
+        const [isMerged, setIsMerged] = React.useState(false);
+        const [infoOpen, setInfoOpen] = React.useState(false);
+
+        const bubbles = [
+          {
+            id: "game",
+            label: "Game Development",
+            title: "Game Development",
+            body:
+              "I'm a game developer with strong experience in Unity, where I focus on gameplay mechanics, system design, and scripting. I've created projects ranging from top-down 2D shooters to 3D open-world survival prototypes, and I always enjoy experimenting with new ideas, solving problems, and learning fresh techniques. My goal is to build experiences that feel alive, intentional, and fun to interact with.",
+          },
+          {
+            id: "web",
+            label: "Web Design",
+            title: "Web Design & Frontend",
+            body:
+              "I'm an emerging web developer who enjoys building interactive, clean, and responsive websites. I've worked with HTML, CSS, JavaScript, and React to create everything from simple interfaces to web applications. I'm always exploring new tools and frameworks, and I'm motivated by the challenge of turning creative ideas into polished, functional web experiences.",
+          },
+          {
+            id: "sales",
+            label: "Sales",
+            title: "Sales & Communication",
+            body:
+              "During my 2025 internship at Muffins AI, I gained hands-on experience in business development and sales operations by running cold outreach campaigns, organizing lead data, and tracking engagement metrics to support the sales pipeline. I also took initiative by proposing Chicago AI Week 2030, which leadership approved, and attended the conference to connect with C-suite and VP-level leaders while coordinating meetings and follow-up demos with our technical team. This experience strengthened my communication, project management, and confidence working on the business side of tech.",
+          },
+        ];
+        
+        const currentId = active || lastActive;
+        const current = bubbles.find((b) => b.id === currentId) || bubbles[0];
+        
+        const handleActivate = (id) => {
+          setActive(id);
+          setLastActive(id);
+          setIsMerged(true);
+          setInfoOpen(true);
+        };
+      
+        const handleBack = () => {
+          setInfoOpen(false);
+        
+          setTimeout(() => {
+            setIsMerged(false);
+            setActive(null);
+          }, 400); /* Bubble Unmerge Time */
+        };
+      
+        return (
+          <section className={`what-i-do-section ${isMerged ? "is-merged" : ""}`} id="what-i-do">
+            {/*In case you want to add a little paragraph before:
+            <p className="wid-subtitle">Click a bubble to see more</p>
+            */}
+            <div id="wid-header">
+                <h2 className="wid-title">What I Do</h2>
+            </div>
+          
+            <div className="bubbles-wrapper">
+              <div className="bubble-layer">
+                {/* Bubbles */}
+                {bubbles.map((bubble) => (
+                  <button
+                    key={bubble.id}
+                    className={
+                      "bubble " +
+                      `bubble-${bubble.id} ` +
+                      (active === bubble.id ? "is-active" : "")
+                    }
+                    onClick={() => handleActivate(bubble.id)}
+                    type="button"
+                  >
+                    <span className="bubble-label">{bubble.label}</span>
+                  </button>
+                ))}
+              </div>
+            
+              {/* Info card that appears when merged */}
+              <div className={`bubble-info ${infoOpen ? "visible" : ""}`}>
+                <button
+                  type="button"
+                  className="bubble-info-back"
+                  onClick={handleBack}
+                  aria-label="Back to bubbles"
+                >
+                  ←
+                </button>
+                <p className="bubble-info-tag">Focused on</p>
+                <h3 className="bubble-info-title">{current.title}</h3>
+                <p className="bubble-info-body">{current.body}</p>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+
+      function SkillsCloud(){
+        const getBaseSpeed = () => {
+          if (typeof window === "undefined") return "normal";
+          return window.innerWidth < 640 ? "slow" : "normal";
+        };
+        const getCloudRadius = () => {
+          if (typeof window === "undefined") return 230;
+          return window.innerWidth < 640 ? 150 : 230;
+        };
+        const getSpeedValue = (label) => {
+          if (label === "slow") return 2.5;
+          if (label === "fast") return 50;
+          return 1;
+        };
+
+        const [baseSpeed, setBaseSpeed] = React.useState(getBaseSpeed);
+        const [currentSpeedLabel, setCurrentSpeedLabel] = React.useState(getBaseSpeed);
+        const baseSpeedRef = React.useRef(baseSpeed);
+        const cloudInstanceRef = React.useRef(null);
+        const easeFrameRef = React.useRef(null);
+        const cloudRadiusRef = React.useRef(getCloudRadius());
+        const [cloudBuildToken, setCloudBuildToken] = React.useState(0);
+        const languageSkills = [
+          "JavaScript",
+          "HTML & CSS",
+          "React",
+          "C#",
+          "Python",
+          "Java"
+        ];
+        const toolSkills = [
+          "Unity",
+          "VS Code",
+          "Git & GitHub",
+          "Eclipse",
+          "Processing"
+        ];
+        const listGroups = [
+          { title: "Languages", items: languageSkills },
+          { title: "Tools", items: toolSkills }
+        ];
+
+        React.useEffect(() => {
+          const texts = [
+            "JavaScript",
+            "HTML",
+            "CSS",
+            "React",
+            "C#",
+            "Python",
+            "Java",
+            "Unity",
+            "VS Code",
+            "Git",
+            "GitHub",
+            "Eclipse"
+          ];
+          const selector = ".skills-cloud";
+          const container = document.querySelector(selector);
+          if (!container) return;
+          container.innerHTML = "";
+          const initialLabel = baseSpeedRef.current;
+          const initialSpeed = getSpeedValue(initialLabel);
+                  
+          const instance = TagCloud(selector, texts, {
+            radius: cloudRadiusRef.current,
+            maxSpeed: initialSpeed,
+            initSpeed: initialSpeed,
+            keep: true,
+          });
+          const resolvedInstance = Array.isArray(instance) ? instance[0] : instance;
+          cloudInstanceRef.current = resolvedInstance;
+          return () => {
+            if (easeFrameRef.current) {
+              cancelAnimationFrame(easeFrameRef.current);
+              easeFrameRef.current = null;
+            }
+            if (resolvedInstance && typeof resolvedInstance.destroy === "function") {
+              resolvedInstance.destroy();
+            }
+            if (container) container.innerHTML = "";
+            if (cloudInstanceRef.current === resolvedInstance) {
+              cloudInstanceRef.current = null;
+            }
+          };
+        }, [cloudBuildToken]);
+      
+        React.useEffect(() => {
+          if (typeof window === "undefined") return;
+          const handleResize = () => {
+            const next = getBaseSpeed();
+            setBaseSpeed(next);
+            const nextRadius = getCloudRadius();
+            if (nextRadius !== cloudRadiusRef.current) {
+              cloudRadiusRef.current = nextRadius;
+              setCloudBuildToken((token) => token + 1);
+            }
+          };
+          window.addEventListener("resize", handleResize);
+          return () => window.removeEventListener("resize", handleResize);
+        }, []);
+      
+        React.useEffect(() => {
+          baseSpeedRef.current = baseSpeed;
+          const instance = cloudInstanceRef.current;
+          if (!instance) return;
+          if (easeFrameRef.current) {
+            cancelAnimationFrame(easeFrameRef.current);
+            easeFrameRef.current = null;
+          }
+          const baseVal = getSpeedValue(baseSpeed);
+          instance.maxSpeed = baseVal;
+          instance.initSpeed = baseVal;
+          setCurrentSpeedLabel(baseSpeed);
+        }, [baseSpeed]);
+      
+        React.useEffect(() => {
+          return () => {
+            if (easeFrameRef.current) {
+              cancelAnimationFrame(easeFrameRef.current);
+            }
+          };
+        }, []);
+      
+        /* ============================================================
+           TAP EFFECT PLACEHOLDER
+           const handleOrbTap = () => {
+             // TODO: Add tap animation / state updates here.
+           };
+           (Actual click-only handler lives below for reference.)
+           ============================================================ */
+        const handleOrbTap = () => {
+          const instance = cloudInstanceRef.current;
+          if (!instance) return;
+
+          // Optional: respect reduced motion
+          if (typeof window !== "undefined") {
+            const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+            if (reduce) return;
+          }
+        
+          // Cancel any previous animation so clicks don't stack weirdly
+          if (easeFrameRef.current) {
+            cancelAnimationFrame(easeFrameRef.current);
+            easeFrameRef.current = null;
+          }
+        
+          const baseLabel = baseSpeedRef.current;
+          const baseValue = getSpeedValue(baseLabel);
+        
+          // Boost amount: noticeable but not ridiculous
+          const boostedValue = Math.max(baseValue * 14.8, baseValue + 0.9);
+        
+          // Timing
+          const HOLD_MS = 1000;  // stay fast for 2 seconds
+          const EASE_MS = 1200;  // then glide back down
+        
+          setCurrentSpeedLabel("fast");
+          instance.maxSpeed = boostedValue;
+        
+          let start = null;
+        
+          const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        
+          const animate = (ts) => {
+            if (start === null) start = ts;
+            const elapsed = ts - start;
+          
+            // Phase 1: hold boosted speed
+            if (elapsed < HOLD_MS) {
+              instance.maxSpeed = boostedValue;
+              easeFrameRef.current = requestAnimationFrame(animate);
+              return;
+            }
+          
+            // Phase 2: ease back to base
+            const t = Math.min((elapsed - HOLD_MS) / EASE_MS, 1);
+            const eased = easeOutCubic(t);
+          
+            const current =
+              boostedValue + (baseValue - boostedValue) * eased;
+          
+            instance.maxSpeed = current;
+          
+            if (t < 1) {
+              easeFrameRef.current = requestAnimationFrame(animate);
+            } else {
+              // Snap to base at the end so it doesn't drift
+              instance.maxSpeed = baseValue;
+              easeFrameRef.current = null;
+              setCurrentSpeedLabel(baseLabel);
+            }
+          };
+        
+          easeFrameRef.current = requestAnimationFrame(animate);
+        };
+
+      
+        return (
+          <section className="skills-section" id="skills">
+            <div className="skills-layout">
+              <div className="skills-copy">
+                <p className="skills-kicker">Toolkit</p>
+                <h2 className="skills-title">Skills that power playful experiences</h2>
+                <p className="skills-text">
+                  From shipping Unity prototypes to polishing React interfaces, I bring a toolkit
+                  that blends engineering discipline with cinematic feel. Here&apos;s what I reach for
+                  when building products, games, and interactive stories.
+                </p>
+                <div className="skills-lists">
+                  {listGroups.map((group) => (
+                    <div className="skills-list" key={group.title}>
+                      <h3>{group.title}</h3>
+                      <ul>
+                        {group.items.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="skills-visual">
+                <div
+                  className="skills-orb"
+                  onClick={handleOrbTap}
+                  data-speed={currentSpeedLabel}
+                >
+                  <div className="skills-center">Skills</div>
+                  <span className="skills-cloud"></span>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Resume({setPage}){
+        const resumeUrl = "./assets/Resume_Anthony Newsome_11.2025.pdf";
+        const handleBack = () => {
+          setPage("home");
+          setTimeout(() => window.scrollToSection("resume-sec"), 80);
+        };
+
+        return(
+          <div className="resume-page">
+            <button 
+            className="btn link-btn back-btn"
+            onClick={handleBack}
+            >
+              ← Back to Home
+            </button>
+
+            <h1 className="resume-title">
+              <span className="resume-title-label">Resume</span>
+              <span className="resume-title-note">Anthony Newsome</span>
+            </h1>
+
+            {/* Actions */}
+            <div className="resume-actions">
+              <a
+                className="btn resume-action resume-action--solid"
+                href={resumeUrl}
+                download
+              >
+                <span>Download PDF</span>
+                <span aria-hidden="true">↓</span>
+              </a>
+
+              <a
+                className="btn resume-action resume-action--ghost"
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>Open in new tab</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            {/* Embeded PDF */}
+            <div className="resume-viewer">
+              <iframe
+                src={resumeUrl + "#view=FitH"}
+                title="Anthony Newsome - Resume"
+                width="100%"
+              />
+            </div>
+          </div>
+        );
+      }
+
+
+      function WorkCarousel(){
+        const projects = [
+          {
+            id: "markdown",
+            title: "Markdown Previewer",
+            role: "React / HTML & CSS",
+            description:
+              "Editor that displays a preview of the HTML entered.",
+            image: "images/coverImages/MarkdownPreviewer.png",
+            liveUrl: "https://lockop.itch.io",
+            githubUrl: null,
+            tags: ["React", "HTML", "CSS"],
+          },
+          {
+            id: "25-5Clock",
+            title: "25-5 Clock",
+            role: "React / HTML & CSS",
+            description:
+              "Set timers, and brakes inbetween with this 25-5 Clock! Perfect to stay on task and get some work done.",
+            image: "images/coverImages/25-5Clock.png",
+            liveUrl: "https://your-portfolio-url.com", //This link
+            githubUrl: "https://github.com/lockop/portfolio",
+            tags: ["React", "HTML", "CSS"],
+          },
+          {
+            id: "drum-machine",
+            title: "Drumn Machine",
+            role: "React / HTML & CSS",
+            description:
+              "Make some fye beats whith this john. New producer who dis???",
+            image: "images/coverImages/DrumMachine.png",
+            liveUrl: "https://your-portfolio-url.com", //This link
+            githubUrl: "https://github.com/lockop/portfolio",
+            tags: ["React", "HTML", "CSS"],
+          },
+          {
+            id: "random-quote-machine",
+            title: "Random Quote Generator",
+            role: "React / HTML & CSS",
+            description:
+              "Are you feeling down on life? Do you need to get some drive... maybe even power into your life? Here, take some motivation!",
+            image: "images/coverImages/RandomQuote.png",
+            liveUrl: "https://your-portfolio-url.com", //This link
+            githubUrl: "https://github.com/lockop/portfolio",
+            tags: ["React", "HTML", "CSS"],
+          },
+          {
+            id: "calculator",
+            title: "Calculator",
+            role: "React / HTML & CSS",
+            description:
+              "Most advanced calculator capable of meeting your mathmatical indevours!",
+            image: "images/coverImages/Calculator.png",
+            liveUrl: "https://your-portfolio-url.com", //This link
+            githubUrl: "https://github.com/lockop/portfolio",
+            tags: ["React", "HTML", "CSS"],
+          },
+        ];
+
+        const [activeIndex, setActiveIndex] = React.useState(0);
+        const [infoOpen, setInfoOpen] = React.useState(false);
+        const count = projects.length;
+              
+        const go = (direction) => {
+          setActiveIndex((prev) => {
+            let next = prev + direction;
+            if (next < 0) next = count - 1;
+            if (next >= count) next = 0;
+            return next;
+          });
+        };
+        React.useEffect(() => {
+          setInfoOpen(false);
+        }, [activeIndex]);
+        const toggleInfo = () => {
+          setInfoOpen((prev) => !prev);
+        };
+      
+        const activeProject = projects[activeIndex];
+
+        return (
+          <section className="work-hero-carousel">
+            <div className="work-hero-inner">
+              {/* SLIDES */}
+              {projects.map((project, index) => {
+                let positionClass = "";
+                if (index === activeIndex) positionClass = " is-active";
+                else if (index < activeIndex) positionClass = " is-left";
+                else positionClass = " is-right";
+              
+                return (
+                  <div
+                    key={project.id}
+                    className={"work-hero-slide" + positionClass}
+                    style={
+                      project.image
+                        ? { backgroundImage: `url(${project.image})` }
+                        : {}
+                    }
+                  >
+                    <div className="work-hero-overlay" />
+                  </div>
+                );
+              })}
+            
+              {/* INFO WRAPPER NOW OUTSIDE THE SLIDES */}
+              <div className="work-info-wrapper" data-open={infoOpen}>
+                <button
+                  type="button"
+                  className="work-info-trigger"
+                  aria-expanded={infoOpen}
+                  onClick={toggleInfo}
+                >
+                  <span>Info</span>
+                </button>
+              
+                <aside className="work-info-panel">
+                  <button
+                    type="button"
+                    className="work-info-close"
+                    onClick={() => setInfoOpen(false)}
+                    aria-label="Close project details"
+                  >
+                    ×
+                  </button>
+                  <p className="work-info-label">Project</p>
+                  <h3 className="work-info-title">{activeProject.title}</h3>
+                  <p className="work-info-role">{activeProject.role}</p>
+                  <p className="work-info-desc">{activeProject.description}</p>
+                
+                  {activeProject.tags && activeProject.tags.length > 0 && (
+                    <ul className="work-info-tags">
+                      {activeProject.tags.map((tag) => (
+                        <li key={tag}>{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                  
+                  <div className="work-info-actions">
+                    {activeProject.liveUrl && (
+                      <a
+                        href={activeProject.liveUrl}
+                        className="btn work-info-btn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Live
+                      </a>
+                    )}
+                    {activeProject.githubUrl && (
+                      <a
+                        href={activeProject.githubUrl}
+                        className="btn work-info-btn secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Code
+                      </a>
+                    )}
+                  </div>
+                </aside>
+              </div>
+            
+              {/* NAV ARROWS */}
+              <button
+                type="button"
+                className="work-hero-nav work-hero-nav-prev"
+                aria-label="Previous project"
+                onClick={() => go(-1)}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="work-hero-nav work-hero-nav-next"
+                aria-label="Next project"
+                onClick={() => go(1)}
+              >
+                ›
+              </button>
+            
+              {/* DOTS */}
+              <div className="work-hero-dots">
+                {projects.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={
+                      "work-hero-dot" + (index === activeIndex ? " is-active" : "")
+                    }
+                    aria-label={`Go to project ${index + 1}`}
+                    onClick={() => setActiveIndex(index)}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+      
+      function WorkCard({ project, isActive, onActivate }) {
+        return (
+          <article
+            className={"work-card" + (isActive ? " is-active" : "")}
+            onMouseEnter={onActivate}
+          >
+            <div className="work-card-image">
+              {project.image ? (
+                <img src={project.image} alt={project.title} />
+              ) : (
+                <div className="work-card-image-fallback">
+                  <span>{project.title}</span>
+                </div>
+              )}
+            </div>
+          
+            {/* Sliding info panel */}
+            <div className="work-card-info">
+              <p className="work-card-role">{project.role}</p>
+              <h3 className="work-card-title">{project.title}</h3>
+              <p className="work-card-description">{project.description}</p>
+            
+              {project.tags && project.tags.length > 0 && (
+                <ul className="work-card-tags">
+                  {project.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              )}
+              
+              <div className="work-card-actions">
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    className="btn work-card-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Live
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    className="btn work-card-btn secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Code
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      }
+
+      function ContactSection() {
+        return (
+          <section className="contact-section">
+            <div className="contact-inner">
+              <p className="contact-kicker">Reach Out</p>
+              <h2 className="contact-title">Let's build something together.</h2>
+              <p className="contact-text">
+                Whether you're looking for a developer, a collaborator, or just want to chat 
+                about games and creative tech, my inbox is always open.
+              </p>
+            
+              <div className="contact-actions">
+                {/* Primary CTA */}
+                <a
+                  href="mailto:anthonynewsome8@gmail.com"
+                  className="btn contact-primary"
+                >
+                  Email Anthony
+                </a>
+              
+                {/* Social links */}
+                <div className="contact-socials">
+                  {/* LinkedIn */}
+                  <a
+                    href="https://www.linkedin.com/in/anthony-newsome-296995319/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-icon contact-icon--linkedin"
+                    aria-label="LinkedIn"
+                  >
+                    <svg
+                      className="contact-icon-svg"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6 1.12 6 0 4.88 0 3.5 0 2.12 1.12 1 2.5 1 3.9 1 4.98 2.12 4.98 3.5zM0.5 8h4V21h-4V8zm7.5 0h3.8v1.8h.05c.53-.95 1.82-1.95 3.75-1.95 4.01 0 4.75 2.64 4.75 6.08V21h-4v-6.16c0-1.47-.03-3.36-2.05-3.36-2.05 0-2.37 1.6-2.37 3.25V21h-4V8z" />
+                    </svg>
+                  </a>
+                
+                  {/* GitHub */}
+                  <a
+                    href="https://github.com/Lockop1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-icon contact-icon--github"
+                    aria-label="GitHub"
+                  >
+                    <svg
+                      className="contact-icon-svg"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 0.5C5.65 0.5 0.5 5.65 0.5 12c0 5.09 3.29 9.4 7.86 10.93.57.11.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.37-3.88-1.37-.52-1.32-1.26-1.67-1.26-1.67-1.03-.71.08-.7.08-.7 1.14.08 1.75 1.17 1.75 1.17 1.01 1.74 2.65 1.24 3.29.95.1-.73.4-1.24.73-1.53-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.17-3.1-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.73 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.57.23 2.73.11 3.02.73.81 1.17 1.84 1.17 3.1 0 4.43-2.69 5.41-5.25 5.7.41.35.78 1.05.78 2.12 0 1.53-.01 2.76-.01 3.13 0 .3.21.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35 0.5 12 0.5z" />
+                    </svg>
+                  </a>
+                
+                  {/* itch.io */}
+                  <a
+                    href="https://lockop.itch.io"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-icon contact-icon--itch"
+                    aria-label="itch.io"
+                  >
+                    <svg
+                      className="contact-icon-svg itch-icon-svg"
+                      viewBox="0 0 48 48"
+                      aria-hidden="true"
+                    >
+                      
+                      <path d="M15.129 13.1335C14.0821 13.7551 12.0195 16.1245 12 16.746V17.7745C12 19.0783 13.2188 20.2243 14.3253 20.2243C15.6539 20.2243 16.761 19.1231 16.761 17.8162C16.761 19.1231 17.8301 20.2243 19.1589 20.2243C20.4877 20.2243 21.5225 19.1231 21.5225 17.8162C21.5225 19.1231 22.6592 20.2243 23.9879 20.2243H24.0121C25.3409 20.2243 26.4776 19.1231 26.4776 17.8162C26.4776 19.1231 27.5124 20.2243 28.8411 20.2243C30.1699 20.2243 31.239 19.1231 31.239 17.8162C31.239 19.1231 32.3462 20.2243 33.6747 20.2243C34.7812 20.2243 36 19.0785 36 17.7745V16.746C35.9805 16.1244 33.9179 13.7549 32.8713 13.1335C29.6175 13.0193 27.3618 12.9995 23.9999 13C20.6381 13.0003 16.055 13.0528 15.1287 13.1335H15.129ZM21.5057 19.6102C21.3786 19.8317 21.2212 20.0343 21.0381 20.2122C20.5365 20.7026 19.849 21.0067 19.0911 21.0067C18.362 21.0074 17.6611 20.7218 17.1399 20.2119C16.9582 20.0339 16.8201 19.8435 16.6936 19.6219L16.6931 19.6223C16.5666 19.8443 16.3906 20.0345 16.2085 20.2127C15.6873 20.7223 14.9863 21.0076 14.2573 21.007C14.166 21.007 14.0709 20.9818 13.9941 20.9554C13.8872 22.0677 13.8422 23.1306 13.8263 23.9057L13.8261 23.9101C13.8241 24.3037 13.8221 24.6273 13.8202 25.077C13.8407 27.4107 13.589 32.6411 14.8491 33.9262C16.8019 34.3815 20.395 34.5888 23.9998 34.5901H24.0004C27.6051 34.5888 31.1982 34.3815 33.1509 33.9262C34.4111 32.641 34.1594 27.4106 34.18 25.0769C34.1778 24.6273 34.176 24.3037 34.1741 23.91L34.1737 23.9056C34.158 23.1303 34.1129 22.0674 34.006 20.9551C33.9292 20.9815 33.8342 21.0068 33.7428 21.0068C33.0138 21.0074 32.3128 20.7221 31.7916 20.2125C31.6095 20.0343 31.4334 19.8442 31.307 19.6221L31.3064 19.6217C31.1798 19.8433 31.0418 20.0337 30.8601 20.2117C30.339 20.7215 29.6381 21.0071 28.909 21.0063C28.1512 21.0063 27.4636 20.7022 26.962 20.2119C26.7789 20.034 26.6215 19.8313 26.4945 19.6099C26.3688 19.8311 26.2129 20.0337 26.0312 20.2119C25.51 20.7217 24.809 21.0072 24.0799 21.0064C24.0535 21.0064 24.0271 21.0053 24.0007 21.0045H24C23.9736 21.0053 23.9472 21.0064 23.9205 21.0064C23.1914 21.0072 22.4903 20.7218 21.9691 20.212C21.7876 20.0338 21.6316 19.8311 21.506 19.61L21.5057 19.6102ZM19.5019 22.2013L19.5017 22.2022H19.5032C20.2967 22.2038 21.0016 22.2022 21.875 23.1555C22.5625 23.0834 23.2808 23.0474 23.9997 23.0485H24.0003C24.7192 23.0475 25.4375 23.0834 26.1251 23.1555C26.9985 22.2021 27.7034 22.2037 28.4969 22.2022H28.4983L28.4981 22.2013C28.8731 22.2013 30.3728 22.2013 31.4178 25.1362L32.5402 29.1626C33.372 32.158 32.2739 32.2313 30.9042 32.2338C28.8729 32.1583 27.7481 30.6831 27.7481 29.2081C26.6237 29.3924 25.312 29.4846 24.0002 29.4846H23.9996C22.6878 29.4846 21.376 29.3924 20.2517 29.2081C20.2517 30.6831 19.1269 32.1583 17.0957 32.2338C15.7259 32.2313 14.6279 32.1581 15.4597 29.1626L16.5824 25.1363C17.6274 22.2014 19.1271 22.2014 19.5021 22.2014L19.5019 22.2013ZM23.9997 24.5078V24.5084C23.9978 24.5103 21.8613 26.4725 21.4772 27.1703L22.8763 27.1143V28.3344C22.8763 28.3915 23.4377 28.3682 23.9997 28.3422H24.0003C24.5622 28.3682 25.1236 28.3915 25.1236 28.3344V27.1143L26.5227 27.1703C26.1385 26.4725 24.0002 24.5084 24.0002 24.5084V24.5078L23.9999 24.508L23.9997 24.5078Z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            
+              <p className="contact-footer-note">
+                Prefer something more casual? Mention how you found me and I'll get back as soon as I can.
+              </p>
+            </div>
+          </section>
+        );
+      }
+
+      function ScrollProgress({ sections }) {
+        const [activeId, setActiveId] = React.useState(sections[0]?.id || null);
+
+        React.useEffect(() => {
+          if (!sections.length) return;
+          const handleScroll = () => {
+            let current = sections[0]?.id || null;
+            sections.forEach((section) => {
+              const element = document.getElementById(section.id);
+              if (!element) return;
+              const rect = element.getBoundingClientRect();
+              if (
+                rect.top <= window.innerHeight * 0.45 &&
+                rect.bottom >= window.innerHeight * 0.2
+              ) {
+                current = section.id;
+              }
+            });
+            if (current) {
+              setActiveId(current);
+            }
+          };
+          handleScroll();
+          window.addEventListener("scroll", handleScroll, { passive: true });
+          return () => {
+            window.removeEventListener("scroll", handleScroll);
+          };
+        }, [sections]);
+
+        return (
+          <div className="scroll-progress" aria-label="Page progress">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                type="button"
+                className={
+                  "scroll-progress-dot" +
+                  (activeId === section.id ? " is-active" : "")
+                }
+                onClick={() => window.scrollToSection(section.id)}
+                aria-label={`Scroll to ${section.label}`}
+              >
+                <span />
+              </button>
+            ))}
+          </div>
+        );
+      }
+
+/*=============== JS START ====================*/
+
+/*=============== JS END ====================*/
+
+
+      function App() {
+        const [page, setPage] = useState("home");
+        return (
+          <>
+            {/*Nav bar:
+              <Navbar page={page} setPage={setPage} />
+              */}
+            {page === "home" && <ScrollProgress sections={scrollSections} />}
+            {page === "home" && <Home setPage={setPage}/>}
+            {page === "about" && <About />}
+            {page === "blog" && <Blog />}
+            {page === "projects" && <Projects />}
+            {page === "games" && <Games />}
+            {page == "resume" && <Resume setPage={setPage}/>}
+          </>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+    <!--<script type="module" src="main.js"></script>-->
+  </body>
+</html>
+

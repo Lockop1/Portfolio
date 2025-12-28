@@ -1,0 +1,70 @@
+.button-glow{
+    min-width: 0;
+    padding: 0.85rem 1.8rem;
+    height: auto;
+    border: none;
+    outline: none;
+    color: #fff;
+    background-color: #0d111f;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+
+.button-glow:before{
+    content: "";
+    background: linear-gradient(45deg, #0a0f3d, #0039a6, #00c8ff, #a259ff, #0a0f3d);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 15s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: inherit;
+}
+
+.button-glow:hover::before{
+    opacity: 1;
+}
+
+.button-glow:after{
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: inherit;
+    transition: opacity .3s ease-in-out;
+}
+
+.button-glow:active{
+    color: #000;
+}
+
+.button-glow:active::after{
+    /*background-color: transparent;*/
+    opacity: 0;
+}
+
+@keyframes glowing{
+    0%      {background-position: 0 0; }
+    50%     {background-position: 100% 0;}
+    100%    {background-position: 0 0;}
+}

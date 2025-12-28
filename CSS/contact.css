@@ -1,0 +1,232 @@
+:root {
+  --ease: cubic-bezier(0.17, 0.67, 0.32, 1.01);
+  
+
+  /* Contact icon variables */
+  --contact-bg: #020617;
+  --contact-icon-size: 64px;
+
+  --linkedin-color: #0a66c2;
+  --github-color: #e5e7eb;
+  --itch-color: #fa5c5c;
+}
+
+/* ===========================
+   CONTACT / REACH OUT SECTION
+   =========================== */
+
+.contact-section {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  padding: 2.5rem 1.75rem 3rem;
+  border-radius: 1.25rem;
+  background: #020617;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.85);
+}
+
+.contact-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Text */
+
+.contact-kicker {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.contact-title {
+  font-size: clamp(2rem, 3vw, 2.4rem);
+  margin-bottom: 0.75rem;
+}
+
+.contact-text {
+  max-width: 36rem;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* Layout */
+
+.contact-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* Primary button – loud & clear */
+
+.contact-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.95rem 2.4rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  background: linear-gradient(120deg, #ffbb85, #ff9b73);
+  color: #1a130a;
+  box-shadow: 0 0 22px rgba(255, 155, 115, 0.6);
+  transform: translateY(0);
+  transition:
+    transform 180ms var(--ease),
+    box-shadow 180ms var(--ease),
+    filter 180ms var(--ease),
+    background 180ms var(--ease);
+}
+
+.contact-primary:hover,
+.contact-primary:focus-visible {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 0 30px rgba(255, 155, 115, 0.85);
+}
+
+/* Social "pills" – text-based links (optional / legacy) */
+
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: inherit;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  opacity: 0.9;
+  transition:
+    background 160ms var(--ease),
+    border-color 160ms var(--ease),
+    transform 160ms var(--ease),
+    opacity 160ms var(--ease);
+}
+
+.contact-pill-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--accent, #54c0ff);
+}
+
+.contact-pill:hover,
+.contact-pill:focus-visible {
+  opacity: 1;
+  background: rgba(15, 23, 42, 1);
+  border-color: var(--accent, #54c0ff);
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   SOCIAL ICON BUTTONS (SVG)
+   =========================== */
+
+.contact-icon {
+  /* Per-button variables (overridden by brand modifiers) */
+  --accent-bg: var(--accent);
+  --accent-fg: #ffffff;
+
+  width: var(--contact-icon-size);
+  height: var(--contact-icon-size);
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--accent-bg);
+  color: var(--accent-fg);
+  border: 1px solid var(--accent-bg);
+
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
+  transform: translateY(0);
+
+  text-decoration: none;
+
+  transition:
+    background 160ms var(--ease),
+    color 160ms var(--ease),
+    border-color 160ms var(--ease),
+    transform 160ms var(--ease),
+    box-shadow 160ms var(--ease);
+}
+
+.contact-icon-svg {
+  width: 60%;
+  height: 60%;
+  fill: currentColor; /* logo follows text color */
+}
+
+.itch-icon-svg{
+  width: 100%;
+  height: 100%;
+}
+
+.contact-icon:hover,
+.contact-icon:focus-visible {
+  background: var(--contact-bg);      /* dark background */
+  color: var(--accent-bg);           /* logo becomes brand color */
+  border-color: var(--accent-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 1);
+}
+
+/* Brand-specific colors */
+
+.contact-icon--linkedin {
+  --accent-bg: var(--linkedin-color);
+  --accent-fg: #ffffff;
+}
+
+.contact-icon--github {
+  --accent-bg: var(--github-color);
+  --accent-fg: #020617;
+}
+
+.contact-icon--itch {
+  --accent-bg: var(--itch-color);
+  --accent-fg: #ffffff;
+}
+
+/* Footer note */
+
+.contact-footer-note {
+  margin-top: 1.6rem;
+  font-size: 0.78rem;
+  opacity: 0.65;
+}
+
+/* Responsive */
+
+@media (min-width: 720px) {
+  .contact-actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact-socials {
+    justify-content: flex-start;
+  }
+}

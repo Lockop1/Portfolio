@@ -11,9 +11,8 @@
   --muted-2: #080c18;
   --border: #2f2840;
 
-  /* Softer autumn accents */
-  --accent: rgba(249, 168, 98, 0.4);   /* soft maple */
-  --accent-2: rgba(245, 158, 66, 0.8); /* warm amber */
+  --accent: rgba(249, 168, 98, 0.4);
+  --accent-2: rgba(245, 158, 66, 0.8);
   --tone-gold: rgb(118, 104, 41);
   --tone-earth: rgb(80, 69, 20);
   --tone-olive: rgb(92, 106, 31);
@@ -63,7 +62,7 @@ body {
   background-repeat: no-repeat;
   color: var(--fg);
   line-height: 1.5;
-  scroll-behavior: smooth; /* enables smooth scroll for anchors & our JS scrollIntoView */
+  scroll-behavior: smooth;
 }
 
 .sr-only {
@@ -81,7 +80,6 @@ body {
   max-width: 100%;
   margin: 0 auto;
   padding: var(--space-4);
-  /* keep the page dark, let accents just be highlights */
   background-color: transparent;
 }
 
@@ -116,7 +114,7 @@ body {
 .link-btn {
   padding: 0.65rem 1rem;
   border-radius: 999px;
-  font-size: 1.05rem; /* bigger text */
+  font-size: 1.05rem;
   background: transparent;
   border: 1px solid transparent;
   color: var(--fg);
@@ -132,7 +130,6 @@ body {
 }
 
 .link-btn[data-active="true"] {
-  /* Active pill – soft amber with gentle cyan glow */
   background: linear-gradient(
     180deg,
     rgba(249, 168, 98, 0.24),
@@ -466,7 +463,7 @@ body {
   padding-bottom: var(--space-6);
 }
 
-/* Alternating subtle backgrounds */
+/* Alternating backgrounds */
 #home-sec2 {
   background:
     radial-gradient(circle at center, rgba(249, 168, 98, 0.08), transparent 65%),

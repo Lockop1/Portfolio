@@ -102,7 +102,7 @@
   box-shadow: 0 0 30px rgba(255, 155, 115, 0.85);
 }
 
-/* Social "pills" – text-based links (optional / legacy) */
+/* Socials */
 
 .contact-pill {
   display: inline-flex;
@@ -143,7 +143,6 @@
    =========================== */
 
 .contact-icon {
-  /* Per-button variables (overridden by brand modifiers) */
   --accent-bg: var(--accent);
   --accent-fg: #ffffff;
 

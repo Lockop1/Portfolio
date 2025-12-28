@@ -334,7 +334,8 @@
                       100,000 views and led to a feature on their blog. That 
                       encouragement pushed me into Minecraft modding with ID
                       Tech where I learned Java, then into Processing, and 
-                      eventually Unity. Over the years, I spent countless hours 
+                      eventually Unity.<br/><br/>
+                      Over the years, I spent countless hours 
                       experimenting with mechanics, systems, and ideas simply because 
                       I was curious. I worked on larger projects, participated in game 
                       jams, and gradually expanded into web development through 
@@ -367,7 +368,7 @@
                       I learn by building and experimenting. I spend most of my time 
                       exploring programming through game development and web projects, 
                       using prototypes to understand how systems work and how small decisions 
-                      affect behavior and feel.<br/>
+                      affect behavior and feel.<br/><br/>
                       I enjoy the process of iteration and debugging, treating it as a form 
                       of refinement where rough ideas slowly turn into something intentional. 
                       Whether I’m working in Unity or on the web, I focus on learning deeply, 
@@ -401,13 +402,13 @@
                       I don’t just enjoy building things. I enjoy understanding why they 
                       work, how small changes affect behavior, and what happens when 
                       systems are pushed, broken, and rebuilt. That mindset shows up in 
-                      how I code, how I debug, and how I approach learning new technologies.<br/>
+                      how I code, how I debug, and how I approach learning new technologies.<br/><br/>
                       I’m naturally drawn to challenge and exploration, both inside and 
                       outside of programming. Snowboarding, traveling, and discovering 
                       new places fuel the same instincts that lead me to start new projects 
                       or experiment with unfamiliar ideas. I’m comfortable being a beginner, 
                       and I see uncertainty as an invitation to learn rather than something 
-                      to avoid. <br/>
+                      to avoid. <br/><br/>
                       Equally important to me is community and connection. Some of my most 
                       meaningful growth has come from collaborating with others, sharing 
                       ideas, and learning from people with different backgrounds and 
@@ -448,8 +449,8 @@
           },
           {
             id: "web",
-            label: "Web Design",
-            title: "Web Design & Frontend",
+            label: "Web Developer",
+            title: "Web Developer & Frontend",
             body:
               "I approach the web as a space for structure, flow, and communication. I enjoy shaping layouts, organizing information, and crafting interfaces that feel intuitive to move through. Much of my work here comes from building small-scale projects that let me explore how ideas translate into usable digital experiences.\n I’m especially interested in how motion, hierarchy, and subtle feedback guide a user’s attention. I like refining details, adjusting spacing, timing, and behavior until a page feels balanced and purposeful. This portfolio itself reflects that process, evolving through constant adjustment and hands-on problem solving.\n Rather than chasing trends or finished products, I focus on strengthening my understanding of how the web works from the ground up. Each project helps me develop better instincts around clarity, usability, and thoughtful design decisions.",
           },
@@ -521,7 +522,9 @@
                 </button>
                 <p className="bubble-info-tag">Focused on</p>
                 <h3 className="bubble-info-title">{current.title}</h3>
-                <p className="bubble-info-body">{current.body}</p>
+                <div className="bubble-info-scroll">
+                  <p className="bubble-info-body">{current.body}</p>
+                </div>
               </div>
             </div>
           </section>
@@ -949,37 +952,39 @@
               
                 <aside className="work-info-panel">
                   <button
-                    type="button"
-                    className="work-info-close"
-                    onClick={() => setInfoOpen(false)}
-                    aria-label="Close project details"
-                  >
-                    ×
-                  </button>
-                  <p className="work-info-label">Project</p>
-                  <h3 className="work-info-title">{activeProject.title}</h3>
-                  <p className="work-info-role">{activeProject.role}</p>
-                  <p className="work-info-desc">{activeProject.description}</p>
+                      type="button"
+                      className="work-info-close"
+                      onClick={() => setInfoOpen(false)}
+                      aria-label="Close project details"
+                    >
+                      ×
+                    </button>
+                  <div className="work-info-scroll">
+                    <p className="work-info-label">Project</p>
+                    <h3 className="work-info-title">{activeProject.title}</h3>
+                    <p className="work-info-role">{activeProject.role}</p>
+                    <p className="work-info-desc">{activeProject.description}</p>
                 
-                  {activeProject.tags && activeProject.tags.length > 0 && (
-                    <ul className="work-info-tags">
-                      {activeProject.tags.map((tag) => (
-                        <li key={tag}>{tag}</li>
-                      ))}
-                    </ul>
-                  )}
-                  
-                  <div className="work-info-actions">
-                    {activeProject.liveUrl && (
-                      <a
-                        href={activeProject.liveUrl}
-                        className="btn work-info-btn"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Live
-                      </a>
-                    )}
+                   {activeProject.tags && activeProject.tags.length > 0 && (
+                     <ul className="work-info-tags">
+                       {activeProject.tags.map((tag) => (
+                         <li key={tag}>{tag}</li>
+                       ))}
+                     </ul>
+                   )}
+                    
+                   <div className="work-info-actions">
+                     {activeProject.liveUrl && (
+                       <a
+                         href={activeProject.liveUrl}
+                         className="btn work-info-btn"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                       >
+                         View Project
+                       </a>
+                     )}
+                   </div>
                   </div>
                 </aside>
               </div>

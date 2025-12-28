@@ -19,7 +19,7 @@
 /* Background layer that moves */
 .hero-bg {
   position: absolute;
-  inset: -30%; /* a bit larger than viewport so movement doesn't show edges */
+  inset: -30%;
   background-image: url("../images/backgrounds/MountainImg.jpg");
   background-size: cover;
   background-position: center;
@@ -30,9 +30,9 @@
       0
     )
     scale(1.1);
-  transition: transform 0.08s linear; /* smooth-ish */
+  transition: transform 0.08s linear;
   will-change: transform;
-  pointer-events: none; /* so mouse can interact with content */
+  pointer-events: none;
 }
 
 /* Optional dark overlay for contrast */

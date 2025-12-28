@@ -102,7 +102,6 @@
    INFO WRAPPER / TAB / PANEL
    =========================== */
 
-/* Wrapper spans the slide – shifted left so tab hugs hero edge */
 .work-info-wrapper {
   position: absolute;
   inset: 0;
@@ -110,7 +109,6 @@
   z-index: 13;
 }
 
-/* Re-enable pointer events on children */
 .work-info-wrapper > * {
   pointer-events: auto;
 }
@@ -154,7 +152,6 @@
   pointer-events: none;
 }
 
-/* Panel hidden off the left by default */
 .work-info-panel {
   position: absolute;
   top: 0;
@@ -401,6 +398,32 @@
     transform: translateY(100%);
     transition: transform 320ms cubic-bezier(.17,.67,.32,1.01);
     overflow-y: auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .work-info-panel::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 64px;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 8, 20, 0),
+      rgba(5, 8, 20, 0.9)
+    );
+  }
+
+  .work-info-scroll {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
+    padding-bottom: 64px;
   }
 
   .work-info-wrapper[data-open="true"] .work-info-panel {

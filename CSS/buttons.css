@@ -59,7 +59,6 @@
 }
 
 .button-glow:active::after{
-    /*background-color: transparent;*/
     opacity: 0;
 }
 

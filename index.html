@@ -35,6 +35,7 @@
 
     <script type="text/babel">
       const { useState } = React;
+      let heroIntroWavePlayed = false;
 
       const scrollSections = [
         { id: "home-sec1", label: "Hero" },
@@ -111,6 +112,25 @@
         };
 
         React.useEffect(() => {
+          if (heroIntroWavePlayed) return;
+
+          heroIntroWavePlayed = true;
+          const introDelay = 1000;
+          const rowDelay = waveLifetime * 0.65;
+          const timers = heroWords.map((word, rowIndex) => {
+            const originIndex = Math.floor((word.length - 1) / 2);
+            return setTimeout(
+              () => triggerLetterWave(rowIndex, originIndex),
+              introDelay + rowIndex * rowDelay
+            );
+          });
+
+          return () => {
+            timers.forEach((timerId) => clearTimeout(timerId));
+          };
+        }, []);
+
+        React.useEffect(() => {
           return () => {
             waveTimeoutsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
             waveTimeoutsRef.current = [];
@@ -122,7 +142,7 @@
             <section className="hero" aria-labelledby="hero-title">
               <div className="hero-bg"></div>
               <div className="hero-content">
-                <h1>WORK IN PROGRESS!</h1>
+                {/*<h1>WORK IN PROGRESS!</h1>*/}
                 <p className="hero-kicker">Game developer & creative technologist</p>
                 <h1 className="sr-only" id="hero-title">Anthony Newsome</h1>
                 <div className="hero-title-grid">
@@ -408,7 +428,7 @@
                       new places fuel the same instincts that lead me to start new projects 
                       or experiment with unfamiliar ideas. I’m comfortable being a beginner, 
                       and I see uncertainty as an invitation to learn rather than something 
-                      to avoid. <br/><br/>
+                      to avoid.<br/><br/>
                       Equally important to me is community and connection. Some of my most 
                       meaningful growth has come from collaborating with others, sharing 
                       ideas, and learning from people with different backgrounds and 
@@ -445,21 +465,21 @@
             label: "Game Development",
             title: "Game Development",
             body:
-              "I explore game development through Unity by building prototypes that focus on mechanics, systems, and player interaction. Most of my work starts as experiments, where the goal is to understand how a system behaves rather than to rush toward a finished release.\n A large part of my process is iteration and debugging. I enjoy breaking systems apart, tracing issues, and refining behavior until a mechanic feels responsive and deliberate. Even when a project stays small, I treat each system as its own product, polishing it until it works exactly the way I intend.\n Through this approach, I’ve built experience across 2D and 3D projects, player movement, core mechanics, and gameplay logic, while continuously expanding my understanding of programming and game design.",
+              "I explore game development through Unity by building prototypes that focus on mechanics, systems, and player interaction. Most of my work starts as experiments, where the goal is to understand how a system behaves rather than to rush toward a finished release.\n\n A large part of my process is iteration and debugging. I enjoy breaking systems apart, tracing issues, and refining behavior until a mechanic feels responsive and deliberate. Even when a project stays small, I treat each system as its own product, polishing it until it works exactly the way I intend.\n\n Through this approach, I’ve built experience across 2D and 3D projects, player movement, core mechanics, and gameplay logic, while continuously expanding my understanding of programming and game design.",
           },
           {
             id: "web",
             label: "Web Developer",
             title: "Web Developer & Frontend",
             body:
-              "I approach the web as a space for structure, flow, and communication. I enjoy shaping layouts, organizing information, and crafting interfaces that feel intuitive to move through. Much of my work here comes from building small-scale projects that let me explore how ideas translate into usable digital experiences.\n I’m especially interested in how motion, hierarchy, and subtle feedback guide a user’s attention. I like refining details, adjusting spacing, timing, and behavior until a page feels balanced and purposeful. This portfolio itself reflects that process, evolving through constant adjustment and hands-on problem solving.\n Rather than chasing trends or finished products, I focus on strengthening my understanding of how the web works from the ground up. Each project helps me develop better instincts around clarity, usability, and thoughtful design decisions.",
+              "I approach the web as a space for structure, flow, and communication. I enjoy shaping layouts, organizing information, and crafting interfaces that feel intuitive to move through. Much of my work here comes from building small-scale projects that let me explore how ideas translate into usable digital experiences.\n\n I’m especially interested in how motion, hierarchy, and subtle feedback guide a user’s attention. I like refining details, adjusting spacing, timing, and behavior until a page feels balanced and purposeful. This portfolio itself reflects that process, evolving through constant adjustment and hands-on problem solving.\n\n Rather than chasing trends or finished products, I focus on strengthening my understanding of how the web works from the ground up. Each project helps me develop better instincts around clarity, usability, and thoughtful design decisions.",
           },
           {
             id: "sales",
             label: "Sales",
             title: "Sales & Communication",
             body:
-              "My experience in sales comes from working hands-on in fast-moving, early-stage environments where clarity, initiative, and follow-through matter. During my 2025 internship at Muffins AI, I supported business development efforts by running outreach campaigns, organizing prospect data, and monitoring engagement to help move conversations forward.\n Beyond execution, I looked for ways to add value. I proposed Chicago AI Week 2030 as a strategic opportunity, which was approved by leadership, and attended the conference. This gave me exposure to high-level conversations and the pace of real sales cycles. I sent follow-ups to coordinate demos and meetings, while connecting with decision-makers across technical and executive roles.\n Through this work, I developed practical skills in communication, organization, and project coordination. I learned how to tailor messaging, track progress, and collaborate across teams, and I gained confidence operating at the intersection of technology and business. That perspective now informs how I think about building products that solve real problems and communicate value clearly.",
+              "My experience in sales comes from working hands-on in fast-moving, early-stage environments where clarity, initiative, and follow-through matter. During my 2025 internship at Muffins AI, I supported business development efforts by running outreach campaigns, organizing prospect data, and monitoring engagement to help move conversations forward.\n\n Beyond execution, I looked for ways to add value. I proposed Chicago AI Week 2030 as a strategic opportunity, which was approved by leadership, and attended the conference. This gave me exposure to high-level conversations and the pace of real sales cycles. I sent follow-ups to coordinate demos and meetings, while connecting with decision-makers across technical and executive roles.\n\n Through this work, I developed practical skills in communication, organization, and project coordination. I learned how to tailor messaging, track progress, and collaborate across teams, and I gained confidence operating at the intersection of technology and business. That perspective now informs how I think about building products that solve real problems and communicate value clearly.",
           },
         ];
         

@@ -121,7 +121,7 @@
 }
 
 .who-am-i-section.is-open .who-am-i-body-wrapper {
-  max-height: 500px;
+  max-height: 1000px;
   opacity: 1;
   transform: translateY(0);
   transition:
@@ -389,6 +389,7 @@
   font-size: 1.05rem;
   line-height: 1.5;
   opacity: 0.85;
+  white-space: pre-line;
 }
 
 

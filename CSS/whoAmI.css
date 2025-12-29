@@ -121,7 +121,7 @@
 }
 
 .who-am-i-section.is-open .who-am-i-body-wrapper {
-  max-height: 1000px;
+  max-height: 1500px;
   opacity: 1;
   transform: translateY(0);
   transition:

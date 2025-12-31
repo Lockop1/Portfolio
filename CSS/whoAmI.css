@@ -218,10 +218,18 @@
 }
 
 .wid-subtitle {
-  margin-top: 0.9rem;
-  font-size: 0.98rem;
-  opacity: 0.9;
-  color: var(--tone-cream-soft);
+  margin-top: clamp(0.7rem, 2.5vw, 1.2rem);
+  color: rgba(var(--tone-cream-soft), 0.6);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  text-align: center;
+  transition: opacity 1s var(--ease);
+}
+
+.what-i-do-section.is-merged .wid-subtitle {
+  opacity: 0;
 }
 
 .what-i-do-section.is-merged .wid-title {
@@ -251,9 +259,16 @@
   width: clamp(190px, 26vw, 240px);
   height: clamp(190px, 26vw, 240px);
   border-radius: 999px;
-  background: var(--bg-elev);
-  border: 2px solid var(--accent-2);
-  box-shadow: none;
+  background: repeating-linear-gradient(
+    145deg,
+    rgba(var(--tone-cream-soft), 0.22) 0%,
+    rgba(6, 10, 22, 0.78) 55%,
+    rgba(var(--tone-cream-soft), 0.22) 110%
+  );
+  border: 2px solid rgba(var(--tone-cream), 0.35);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 24px 45px rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,8 +277,11 @@
   text-align: center;
   padding: 1.25rem;
   font-size: clamp(1.4rem, 4vw, 1.8rem);
-  font-weight: 500;
+  font-weight: 600;
   transform-origin: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  z-index: 1;
   transition:
     transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
     opacity 0.4s ease,
@@ -273,12 +291,26 @@
 }
 
 .bubble::before {
-  content: none;
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: inherit;
+  border: 1px solid rgba(var(--tone-cream), 0.35);
+  opacity: 0;
+  transform: scale(0.85);
+  filter: blur(0);
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .bubble-label {
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.65);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .bubble-game {
@@ -296,7 +328,23 @@
 .what-i-do-section:not(.is-merged) .bubble:hover {
   box-shadow:
     0 0 30px var(--accent-2),
-    0 0 80px rgba(56, 189, 248, 0.3);
+    0 0 80px rgba(56, 189, 248, 0.3),
+    0 26px 55px rgba(0, 0, 0, 0.85);
+  border-color: rgba(var(--tone-cream), 0.85);
+  background: linear-gradient(
+    150deg,
+    rgba(var(--tone-cream-soft), 0.28),
+    rgba(6, 10, 22, 0.85)
+  );
+}
+
+.what-i-do-section:not(.is-merged) .bubble:hover::before {
+  opacity: 0.85;
+  transform: scale(1);
+}
+
+.what-i-do-section:not(.is-merged) .bubble:hover .bubble-label {
+  transform: translateY(-2px);
 }
 
 .what-i-do-section.is-merged .bubble {
@@ -327,6 +375,7 @@
     0 0 80px rgba(56, 189, 248, 0.35);
   opacity: 0;
   pointer-events: none;
+  z-index: 5;
   text-align: left;
   transition:
     opacity 0.35s ease,
